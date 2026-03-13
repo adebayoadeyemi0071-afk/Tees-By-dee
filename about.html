@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Our Story – Tees by Dee</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Fira+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --cream: #FAFAF8; --sage: #A8B5A2; --rose: #D4A5A5;
+      --taupe: #C4A882; --charcoal: #4A4A4A; --dark: #2C2C2C;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--cream); color: var(--charcoal); font-family:'Fira Sans',sans-serif; cursor:none; }
+    h1,h2,h3,h4 { font-family:'Playfair Display',serif; }
+    .cursor { width:12px;height:12px;background:var(--taupe);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transition:transform 0.15s ease; }
+    .cursor-follower { width:36px;height:36px;border:1.5px solid var(--taupe);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transition:all 0.2s ease;opacity:0.6; }
+    nav { position:fixed;top:0;width:100%;z-index:100;padding:1.5rem 4rem;display:flex;align-items:center;justify-content:space-between;transition:all 0.4s ease; }
+    nav.scrolled { background:rgba(250,250,248,0.92);backdrop-filter:blur(12px);box-shadow:0 1px 20px rgba(0,0,0,0.06);padding:1rem 4rem; }
+    .nav-logo { font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--taupe);letter-spacing:0.1em;text-decoration:none; }
+    .nav-links { display:flex;gap:2.5rem;list-style:none; }
+    .nav-links a { font-size:0.85rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--charcoal);text-decoration:none;position:relative;padding-bottom:4px; }
+    .nav-links a::after { content:'';position:absolute;bottom:0;left:0;width:0;height:1px;background:var(--taupe);transition:width 0.3s ease; }
+    .nav-links a:hover::after { width:100%; }
+    .reveal { opacity:0;transform:translateY(40px);transition:opacity 0.8s ease,transform 0.8s ease; }
+    .reveal.visible { opacity:1;transform:translateY(0); }
+    .reveal-left { opacity:0;transform:translateX(-40px);transition:opacity 0.8s ease,transform 0.8s ease; }
+    .reveal-left.visible { opacity:1;transform:translateX(0); }
+    .reveal-right { opacity:0;transform:translateX(40px);transition:opacity 0.8s ease,transform 0.8s ease; }
+    .reveal-right.visible { opacity:1;transform:translateX(0); }
+    .delay-1{transition-delay:0.1s}.delay-2{transition-delay:0.2s}.delay-3{transition-delay:0.3s}.delay-4{transition-delay:0.4s}
+    .btn-primary { background:var(--taupe);color:white;padding:0.9rem 2.2rem;font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;transition:all 0.3s ease;display:inline-block; }
+    .btn-primary:hover { background:var(--charcoal);transform:translateY(-2px);box-shadow:0 8px 25px rgba(0,0,0,0.12); }
+    .value-card { padding:2.5rem;border:1px solid rgba(196,168,130,0.2);transition:all 0.4s ease; }
+    .value-card:hover { border-color:var(--taupe);transform:translateY(-6px);box-shadow:0 20px 50px rgba(196,168,130,0.1); }
+    .timeline-item { display:grid;grid-template-columns:80px 1fr;gap:2rem;padding:2rem 0;border-bottom:1px solid rgba(196,168,130,0.15); }
+    .timeline-year { font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--taupe);font-weight:600; }
+    @media(max-width:768px){
+      nav{padding:1rem 1.5rem;}
+      nav.scrolled{padding:0.8rem 1.5rem;}
+      .nav-links{gap:1.2rem;}
+      .nav-links a{font-size:0.75rem;}
+    }
+  </style>
+</head>
+<body>
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-follower" id="cursorFollower"></div>
+ 
+  <nav id="navbar">
+    <a href="index.html" class="nav-logo">TEES BY DEE</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="shop.html">Shop</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+ 
+  <!-- HERO -->
+  <section style="min-height:60vh;display:flex;align-items:center;padding:10rem 4rem 5rem;background:linear-gradient(135deg,rgba(196,168,130,0.08),rgba(212,165,165,0.05));position:relative;overflow:hidden;">
+    <div style="position:absolute;right:-100px;top:50%;transform:translateY(-50%);width:500px;height:500px;border-radius:50%;border:1px solid rgba(196,168,130,0.1);"></div>
+    <div style="position:absolute;right:-50px;top:50%;transform:translateY(-50%);width:350px;height:350px;border-radius:50%;border:1px solid rgba(212,165,165,0.1);"></div>
+    <div style="max-width:700px;">
+      <p style="font-size:0.75rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--taupe);margin-bottom:1rem;" class="reveal">Our Story</p>
+      <h1 style="font-size:clamp(2.5rem,5vw,4.5rem);line-height:1.1;color:var(--dark);margin-bottom:1.5rem;" class="reveal">Crafted With Love,<br><em style="color:var(--taupe);">Worn With Pride</em></h1>
+      <p style="font-size:1.05rem;line-height:1.9;opacity:0.75;max-width:550px;" class="reveal">The story behind Tees by Dee — a brand born from passion, built on quality, and dedicated to celebrating life's most meaningful moments.</p>
+    </div>
+  </section>
+ 
+  <!-- FOUNDING STORY -->
+  <section style="padding:7rem 4rem;">
+    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;">
+      <div class="reveal-left">
+        <div style="aspect-ratio:4/5;background:linear-gradient(135deg,rgba(196,168,130,0.15),rgba(168,181,162,0.15));border:1px solid rgba(196,168,130,0.25);display:flex;align-items:center;justify-content:center;position:relative;">
+          <div style="position:absolute;inset:16px;border:1px solid rgba(196,168,130,0.12);"></div>
+          <div style="text-align:center;">
+            <p style="font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--taupe);font-style:italic;">The Founder</p>
+            <p style="font-size:0.8rem;opacity:0.5;margin-top:0.5rem;">Photo Coming Soon</p>
+          </div>
+        </div>
+      </div>
+      <div class="reveal-right">
+        <p style="font-size:0.72rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--taupe);margin-bottom:1rem;">How It All Began</p>
+        <h2 style="font-size:clamp(1.8rem,3vw,2.8rem);color:var(--dark);line-height:1.2;margin-bottom:1.5rem;">A Passion for<br>Meaningful Celebration</h2>
+        <p style="line-height:1.9;opacity:0.75;margin-bottom:1.2rem;font-size:0.95rem;">Tees by Dee was founded with one simple belief: every milestone deserves to be remembered beautifully. Whether it's the joy of graduating after years of hard work, or the beauty of a bride's special day — we wanted to create pieces that carry those memories forever.</p>
+        <p style="line-height:1.9;opacity:0.75;margin-bottom:1.2rem;font-size:0.95rem;">What started as a small passion project quickly grew into a beloved brand trusted by hundreds of final year students and brides across Nigeria. Our custom signout shirts have graced graduation ceremonies, and our traditional handfans have added elegance to countless weddings.</p>
+        <p style="line-height:1.9;opacity:0.75;font-size:0.95rem;">Every piece is made with intention — carefully crafted, thoughtfully designed, and delivered with love.</p>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- VALUES -->
+  <section style="padding:5rem 4rem;background:white;">
+    <div style="max-width:1100px;margin:0 auto;">
+      <div class="reveal" style="text-align:center;margin-bottom:4rem;">
+        <p style="font-size:0.72rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--taupe);margin-bottom:1rem;">What Drives Us</p>
+        <h2 style="font-size:clamp(1.8rem,3vw,2.8rem);color:var(--dark);">Our Core Values</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;">
+        <div class="value-card reveal delay-1">
+          <div style="width:48px;height:48px;border:1px solid var(--taupe);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C4A882" stroke-width="1.5"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+          </div>
+          <h3 style="font-size:1.2rem;color:var(--dark);margin-bottom:0.8rem;">Quality First</h3>
+          <p style="font-size:0.88rem;line-height:1.8;opacity:0.7;">We never compromise on the quality of our materials or craftsmanship. Every stitch, every print is held to the highest standard.</p>
+        </div>
+        <div class="value-card reveal delay-2">
+          <div style="width:48px;height:48px;border:1px solid var(--taupe);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C4A882" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          </div>
+          <h3 style="font-size:1.2rem;color:var(--dark);margin-bottom:0.8rem;">On-Time Delivery</h3>
+          <p style="font-size:0.88rem;line-height:1.8;opacity:0.7;">We understand your events are time-sensitive. We work diligently to ensure your order arrives exactly when you need it.</p>
+        </div>
+        <div class="value-card reveal delay-3">
+          <div style="width:48px;height:48px;border:1px solid var(--taupe);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C4A882" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3 style="font-size:1.2rem;color:var(--dark);margin-bottom:0.8rem;">Customer Joy</h3>
+          <p style="font-size:0.88rem;line-height:1.8;opacity:0.7;">Your satisfaction is our greatest reward. We go above and beyond to ensure every customer leaves happy and comes back again.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- TIMELINE -->
+  <section style="padding:7rem 4rem;">
+    <div style="max-width:800px;margin:0 auto;">
+      <div class="reveal" style="margin-bottom:4rem;">
+        <p style="font-size:0.72rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--taupe);margin-bottom:1rem;">Our Journey</p>
+        <h2 style="font-size:clamp(1.8rem,3vw,2.8rem);color:var(--dark);">How We've Grown</h2>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="timeline-year">2022</div>
+        <div>
+          <h3 style="font-size:1.1rem;color:var(--dark);margin-bottom:0.5rem;">The Beginning</h3>
+          <p style="font-size:0.9rem;line-height:1.8;opacity:0.7;">Tees by Dee started as a small passion project, creating custom tees for a small group of final year friends. The response was overwhelming.</p>
+        </div>
+      </div>
+      <div class="timeline-item reveal delay-1">
+        <div class="timeline-year">2023</div>
+        <div>
+          <h3 style="font-size:1.1rem;color:var(--dark);margin-bottom:0.5rem;">Expanding to Bridal</h3>
+          <p style="font-size:0.9rem;line-height:1.8;opacity:0.7;">We introduced our traditional handfan collection for weddings and quickly became a go-to brand for brides seeking something truly unique and elegant.</p>
+        </div>
+      </div>
+      <div class="timeline-item reveal delay-2">
+        <div class="timeline-year">2024</div>
+        <div>
+          <h3 style="font-size:1.1rem;color:var(--dark);margin-bottom:0.5rem;">500+ Happy Customers</h3>
+          <p style="font-size:0.9rem;line-height:1.8;opacity:0.7;">We hit a major milestone — over 500 satisfied customers across Nigeria. Our reputation for quality and reliability grew through word of mouth.</p>
+        </div>
+      </div>
+      <div class="timeline-item reveal delay-3" style="border-bottom:none;">
+        <div class="timeline-year">2025+</div>
+        <div>
+          <h3 style="font-size:1.1rem;color:var(--dark);margin-bottom:0.5rem;">Growing Nationwide</h3>
+          <p style="font-size:0.9rem;line-height:1.8;opacity:0.7;">Today, Tees by Dee serves customers across Nigeria and beyond. We're constantly expanding our collections and improving our craft.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- CTA -->
+  <section style="padding:6rem 4rem;background:var(--dark);text-align:center;">
+    <div class="reveal">
+      <p style="font-size:0.72rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--rose);margin-bottom:1rem;">Ready to Order?</p>
+      <h2 style="font-size:clamp(2rem,4vw,3.5rem);color:white;margin-bottom:1.5rem;">Let's Create Something<br><em style="color:var(--taupe);">Beautiful Together</em></h2>
+      <p style="opacity:0.6;margin-bottom:2.5rem;font-size:1rem;">Explore our collections or get in touch to place a custom order.</p>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+        <a href="shop.html" class="btn-primary">View Shop</a>
+        <a href="index.html#contact" style="color:white;border:1px solid rgba(255,255,255,0.3);padding:0.9rem 2.2rem;font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;transition:all 0.3s ease;">Contact Us</a>
+      </div>
+    </div>
+  </section>
+ 
+  <footer style="background:var(--dark);color:white;padding:3rem 4rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;border-top:1px solid rgba(255,255,255,0.05);">
+    <div style="font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--taupe);letter-spacing:0.1em;">TEES BY DEE</div>
+    <p style="font-size:0.8rem;opacity:0.4;">© 2026 Tees by Dee. All rights reserved.</p>
+    <div style="display:flex;gap:2rem;">
+      <a href="index.html" style="color:white;opacity:0.5;font-size:0.8rem;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;transition:opacity 0.3s;">Home</a>
+      <a href="shop.html" style="color:white;opacity:0.5;font-size:0.8rem;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;transition:opacity 0.3s;">Shop</a>
+    </div>
+  </footer>
+ 
+  <script>
+    const cursor = document.getElementById('cursor');
+    const follower = document.getElementById('cursorFollower');
+    let mx=0,my=0,fx=0,fy=0;
+    document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx-6+'px';cursor.style.top=my-6+'px';});
+    function animateFollower(){fx+=(mx-fx)*0.12;fy+=(my-fy)*0.12;follower.style.left=fx-18+'px';follower.style.top=fy-18+'px';requestAnimationFrame(animateFollower);}
+    animateFollower();
+    window.addEventListener('scroll',()=>{document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>60);});
+    const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.1});
+    document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>observer.observe(el));
+  </script>
+</body>
+</html>

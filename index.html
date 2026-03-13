@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tees by Dee</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="Tailwind/tailwind.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Fira+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--cream:#FAFAF8;--sage:#A8B5A2;--rose:#D4A5A5;--taupe:#C4A882;--charcoal:#4A4A4A;--dark:#2C2C2C;}
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--cream);color:var(--charcoal);font-family:'Fira Sans',sans-serif;overflow-x:hidden;cursor:none;width:100%;min-height:100vh;}
+    h1,h2,h3,h4{font-family:'Playfair Display',serif;}
+ 
+    /* CURSOR */
+    .cursor{width:12px;height:12px;background:var(--taupe);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transition:transform 0.15s ease;}
+    .cursor-follower{width:36px;height:36px;border:1.5px solid var(--taupe);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transition:all 0.2s ease;opacity:0.6;}
+ 
+    /* NAV */
+    nav{position:fixed;top:0;width:100%;z-index:100;padding:1.5rem 5%;display:flex;align-items:center;justify-content:space-between;transition:all 0.4s ease;}
+    nav.scrolled{background:rgba(250,250,248,0.95);backdrop-filter:blur(12px);box-shadow:0 1px 20px rgba(0,0,0,0.06);padding:1rem 5%;}
+    .nav-logo{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--taupe);letter-spacing:0.1em;text-decoration:none;}
+    .nav-links{display:flex;gap:2.5rem;list-style:none;}
+    .nav-links a{font-size:0.85rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--charcoal);text-decoration:none;position:relative;padding-bottom:4px;}
+    .nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1px;background:var(--taupe);transition:width 0.3s ease;}
+    .nav-links a:hover::after{width:100%;}
+    .nav-hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;}
+    .nav-hamburger span{display:block;width:24px;height:1.5px;background:var(--charcoal);transition:all 0.3s ease;}
+    .mobile-menu{display:none;position:fixed;inset:0;background:var(--cream);z-index:99;flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;}
+    .mobile-menu.open{display:flex;}
+    .mobile-menu a{font-family:'Playfair Display',serif;font-size:2rem;color:var(--dark);text-decoration:none;transition:color 0.3s;}
+    .mobile-menu a:hover{color:var(--taupe);}
+    .mobile-close{position:absolute;top:2rem;right:2rem;font-size:1.8rem;background:none;border:none;cursor:pointer;color:var(--charcoal);}
+ 
+    /* HERO */
+    .hero{min-height:100vh;width:100%;display:flex;align-items:center;padding:0 5%;position:relative;overflow:hidden;}
+    .hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%,rgba(196,168,130,0.12) 0%,transparent 60%),radial-gradient(ellipse at 20% 80%,rgba(168,181,162,0.1) 0%,transparent 50%);}
+    .hero-decorative{position:absolute;width:500px;height:500px;border-radius:50%;border:1px solid rgba(196,168,130,0.15);top:50%;left:65%;transform:translate(-50%,-50%);animation:slowSpin 20s linear infinite;}
+    .hero-decorative::before{content:'';position:absolute;inset:40px;border-radius:50%;border:1px solid rgba(212,165,165,0.12);}
+    @keyframes slowSpin{from{transform:translate(-50%,-50%) rotate(0deg);}to{transform:translate(-50%,-50%) rotate(360deg);}}
+    .hero-content{max-width:650px;position:relative;z-index:2;}
+    .hero-tag{display:inline-block;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--taupe);border:1px solid var(--taupe);padding:0.4rem 1rem;margin-bottom:2rem;opacity:0;transform:translateY(20px);animation:fadeUp 0.8s ease forwards 0.3s;}
+    .hero-title{font-size:clamp(2.8rem,6vw,5.5rem);line-height:1.05;color:var(--dark);margin-bottom:1.5rem;opacity:0;transform:translateY(30px);animation:fadeUp 0.9s ease forwards 0.5s;}
+    .hero-title em{color:var(--taupe);font-style:italic;}
+    .hero-sub{font-size:1rem;line-height:1.8;color:var(--charcoal);opacity:0;max-width:480px;margin-bottom:2.5rem;animation:fadeUp 0.8s ease forwards 0.7s;}
+    .hero-buttons{display:flex;gap:1rem;align-items:center;flex-wrap:wrap;opacity:0;animation:fadeUp 0.8s ease forwards 0.9s;}
+    .btn-primary{background:var(--taupe);color:white;padding:0.9rem 2.2rem;font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;transition:all 0.3s ease;display:inline-block;border:none;cursor:pointer;}
+    .btn-primary:hover{background:var(--charcoal);transform:translateY(-2px);box-shadow:0 8px 25px rgba(0,0,0,0.12);}
+    .btn-outline{color:var(--charcoal);padding:0.9rem 2.2rem;font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;border-bottom:1px solid var(--charcoal);transition:all 0.3s ease;}
+    .btn-outline:hover{color:var(--taupe);border-color:var(--taupe);}
+    .hero-scroll{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:0.5rem;opacity:0;animation:fadeUp 0.8s ease forwards 1.2s;}
+    .hero-scroll span{font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--sage);}
+    .scroll-line{width:1px;height:50px;background:linear-gradient(to bottom,var(--sage),transparent);animation:scrollPulse 2s ease-in-out infinite;}
+    @keyframes scrollPulse{0%,100%{opacity:0.3;}50%{opacity:1;}}
+    @keyframes fadeUp{to{opacity:1;transform:translateY(0);}}
+ 
+    /* MARQUEE */
+    .marquee-section{border-top:1px solid rgba(196,168,130,0.2);border-bottom:1px solid rgba(196,168,130,0.2);padding:1.2rem 0;overflow:hidden;background:var(--taupe);width:100%;}
+    .marquee-track{display:flex;width:max-content;animation:marquee 18s linear infinite;}
+    .marquee-item{font-family:'Playfair Display',serif;font-size:0.85rem;letter-spacing:0.15em;text-transform:uppercase;color:white;padding:0 3rem;white-space:nowrap;}
+    @keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+ 
+    /* SECTIONS */
+    section{padding:7rem 5%;width:100%;}
+    .section-label{font-size:0.72rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--taupe);margin-bottom:1rem;}
+    .section-title{font-size:clamp(2rem,4vw,3.2rem);color:var(--dark);line-height:1.15;margin-bottom:1.5rem;}
+ 
+    /* REVEAL ANIMATIONS */
+    .reveal{opacity:0;transform:translateY(50px);transition:opacity 0.8s ease,transform 0.8s ease;}
+    .reveal.visible{opacity:1;transform:translateY(0);}
+    .reveal-left{opacity:0;transform:translateX(-50px);transition:opacity 0.8s ease,transform 0.8s ease;}
+    .reveal-left.visible{opacity:1;transform:translateX(0);}
+    .reveal-right{opacity:0;transform:translateX(50px);transition:opacity 0.8s ease,transform 0.8s ease;}
+    .reveal-right.visible{opacity:1;transform:translateX(0);}
+    .delay-1{transition-delay:0.1s}.delay-2{transition-delay:0.2s}.delay-3{transition-delay:0.3s}.delay-4{transition-delay:0.4s}
+ 
+    /* ABOUT */
+    .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;max-width:1200px;margin:0 auto;}
+    .about-image-box{width:100%;aspect-ratio:3/4;background:linear-gradient(135deg,rgba(196,168,130,0.15),rgba(168,181,162,0.15));border:1px solid rgba(196,168,130,0.25);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--taupe);font-style:italic;position:relative;}
+    .about-image-box::before{content:'';position:absolute;inset:12px;border:1px solid rgba(196,168,130,0.15);}
+    .about-stat{padding:1.5rem;border:1px solid rgba(196,168,130,0.2);transition:all 0.3s ease;}
+    .about-stat:hover{border-color:var(--taupe);transform:translateY(-4px);box-shadow:0 10px 30px rgba(196,168,130,0.1);}
+    .stat-number{font-family:'Playfair Display',serif;font-size:2.5rem;color:var(--taupe);}
+    .stat-label{font-size:0.8rem;letter-spacing:0.1em;color:var(--charcoal);opacity:0.7;}
+ 
+    /* SERVICES */
+    .services-section{background:white;}
+    .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:4rem;}
+    .service-card{background:var(--cream);padding:3rem 2.5rem;position:relative;overflow:hidden;transition:all 0.4s ease;cursor:pointer;}
+    .service-card::before{content:'';position:absolute;bottom:0;left:0;width:100%;height:3px;background:var(--taupe);transform:scaleX(0);transform-origin:left;transition:transform 0.4s ease;}
+    .service-card:hover::before{transform:scaleX(1);}
+    .service-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,0.08);}
+    .service-icon-wrap{width:52px;height:52px;border:1px solid rgba(196,168,130,0.4);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;transition:all 0.4s ease;}
+    .service-card:hover .service-icon-wrap{background:var(--taupe);border-color:var(--taupe);}
+    .service-card:hover .service-icon-wrap svg{stroke:white;}
+    .service-title{font-size:1.4rem;color:var(--dark);margin-bottom:1rem;}
+    .service-desc{font-size:0.9rem;line-height:1.8;opacity:0.75;}
+    .service-tag{display:inline-block;margin-top:1.5rem;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--taupe);}
+ 
+    /* PRODUCTS */
+    .products-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:4rem;max-width:1200px;margin-left:auto;margin-right:auto;}
+    .product-card{position:relative;overflow:hidden;cursor:pointer;}
+    .product-image{width:100%;aspect-ratio:3/4;object-fit:cover;transition:transform 0.6s ease;display:block;}
+    .product-card:hover .product-image{transform:scale(1.05);}
+    .product-overlay{position:absolute;top:0;left:0;right:0;bottom:60px;background:rgba(44,44,44,0.5);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.4s ease;}
+    .product-card:hover .product-overlay{opacity:1;}
+    .product-overlay-btn{color:white;border:1px solid white;padding:0.7rem 1.8rem;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;transform:translateY(10px);transition:transform 0.3s ease 0.1s;cursor:pointer;background:transparent;text-decoration:none;display:inline-block;}
+    .product-card:hover .product-overlay-btn{transform:translateY(0);}
+    .product-info{padding:1.2rem 0;}
+    .product-name{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--dark);}
+    .product-price{font-size:0.9rem;color:var(--taupe);margin-top:0.3rem;}
+ 
+    /* TESTIMONIALS */
+    .testimonials-section{background:var(--dark);color:white;}
+    .testimonials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:4rem;max-width:1200px;margin-left:auto;margin-right:auto;}
+    .testimonial-card{padding:2.5rem;border:1px solid rgba(255,255,255,0.08);transition:all 0.4s ease;}
+    .testimonial-card:hover{border-color:var(--rose);transform:translateY(-6px);}
+    .testimonial-quote{font-family:'Playfair Display',serif;font-size:3rem;color:var(--rose);opacity:0.4;line-height:1;margin-bottom:1rem;}
+    .testimonial-text{font-size:0.95rem;line-height:1.9;opacity:0.8;margin-bottom:1.5rem;}
+    .testimonial-author{font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--taupe);}
+ 
+    /* CONTACT */
+    .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start;max-width:1100px;margin:0 auto;}
+    .form-group{display:flex;flex-direction:column;gap:0.5rem;}
+    .form-label{font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--charcoal);opacity:0.7;}
+    .form-input{background:transparent;border:none;border-bottom:1px solid rgba(196,168,130,0.3);padding:0.8rem 0;font-family:'Fira Sans',sans-serif;font-size:0.95rem;color:var(--charcoal);outline:none;transition:border-color 0.3s ease;width:100%;}
+    .form-input:focus{border-color:var(--taupe);}
+    .form-input::placeholder{opacity:0.4;font-size:0.85rem;}
+ 
+    /* FOOTER */
+    footer{background:var(--dark);color:white;padding:4rem 5%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+    .footer-logo{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--taupe);letter-spacing:0.1em;}
+    .footer-links a{color:white;opacity:0.5;font-size:0.8rem;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;transition:opacity 0.3s;}
+    .footer-links a:hover{opacity:1;}
+ 
+    /* RESPONSIVE */
+    @media(max-width:1024px){
+      .about-grid{grid-template-columns:1fr;gap:4rem;}
+      .services-grid{grid-template-columns:1fr 1fr;}
+      .products-grid{grid-template-columns:1fr 1fr;}
+      .testimonials-grid{grid-template-columns:1fr 1fr;}
+      .contact-grid{grid-template-columns:1fr;gap:4rem;}
+    }
+    @media(max-width:768px){
+      nav{padding:1rem 5%;}
+      nav.scrolled{padding:0.8rem 5%;}
+      .nav-links{display:none;}
+      .nav-hamburger{display:flex;}
+      .hero-decorative{display:none;}
+      .services-grid{grid-template-columns:1fr;}
+      .products-grid{grid-template-columns:1fr;}
+      .testimonials-grid{grid-template-columns:1fr;}
+      section{padding:5rem 5%;}
+      .footer-logo{font-size:1.4rem;}
+    }
+    @media(max-width:480px){
+      .hero-title{font-size:2.4rem;}
+      .about-grid{gap:3rem;}
+    }
+  </style>
+</head>
+<body>
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-follower" id="cursorFollower"></div>
+ 
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-close" onclick="toggleMenu()">✕</button>
+    <a href="#about" onclick="toggleMenu()">About</a>
+    <a href="#services" onclick="toggleMenu()">Services</a>
+    <a href="shop.html" onclick="toggleMenu()">Shop</a>
+    <a href="#contact" onclick="toggleMenu()">Contact</a>
+  </div>
+ 
+  <!-- NAV -->
+  <nav id="navbar">
+    <a href="#" class="nav-logo">TEES BY DEE</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="shop.html">Shop</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="nav-hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+ 
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-decorative"></div>
+    <div class="hero-content">
+      <span class="hero-tag">Est. Lagos, Nigeria</span>
+      <h1 class="hero-title">Wear Your Story,<br><em>Celebrate</em><br>Your Journey</h1>
+      <p class="hero-sub">Custom signout shirts, traditional handfans, and premium tees crafted for brides and final year students who deserve to be remembered.</p>
+      <div class="hero-buttons">
+        <a href="shop.html" class="btn-primary">Shop Collection</a>
+        <a href="about.html" class="btn-outline">Our Story</a>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+ 
+  <!-- MARQUEE -->
+  <div class="marquee-section">
+    <div class="marquee-track">
+      <span class="marquee-item">Custom Signout Shirts</span>
+      <span class="marquee-item" style="opacity:0.5;">✦</span>
+      <span class="marquee-item">Traditional Handfans</span>
+      <span class="marquee-item" style="opacity:0.5;">✦</span>
+      <span class="marquee-item">Bridal Collections</span>
+      <span class="marquee-item" style="opacity:0.5;">✦</span>
+      <span class="marquee-item">Final Year Students</span>
+      <span class="marquee-item" style="opacity:0.5;">✦</span>
+      <span class="marquee-item">Custom Printing</span>
+      <span class="marquee-item" style="opacity:0.5;">✦</span>
+      <span class="marquee-item">Premium Quality Tees</span>
+      <span class="marquee-item" style="opacity:0.5;">✦</span>
+      <span class="marquee-item">Custom Signout Shirts</span>
+      <span class="marquee-item" style="opacity:0.5;">✦</span>
+      <span class="marquee-item">Traditional Handfans</span>
+      <span class="marquee-item" style="opacity:0.5;">✦</span>
+      <span class="marquee-item">Bridal Collections</span>
+      <span class="marquee-item" style="opacity:0.5;">✦</span>
+      <span class="marquee-item">Final Year Students</span>
+      <span class="marquee-item" style="opacity:0.5;">✦</span>
+      <span class="marquee-item">Custom Printing</span>
+      <span class="marquee-item" style="opacity:0.5;">✦</span>
+      <span class="marquee-item">Premium Quality Tees</span>
+      <span class="marquee-item" style="opacity:0.5;">✦</span>
+    </div>
+  </div>
+ 
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-grid">
+      <div class="reveal-left">
+        <div style="position:relative;">
+          <div class="about-image-box"><img src="tees.jpg" alt="Dee at work" style="width:80%;border-radius:8px;box-shadow:0 10px 30px rgba(196,168,130,0.1);"/></div>
+          <div style="position:absolute;bottom:-20px;right:-20px;width:120px;height:120px;background:var(--rose);opacity:0.2;border-radius:50%;"></div>
+        </div>
+      </div>
+      <div class="reveal-right">
+        <p class="section-label">Our Story</p>
+        <h2 class="section-title">Crafted With Love,<br>Worn With Pride</h2>
+        <p style="line-height:1.9;opacity:0.75;margin-bottom:1.2rem;font-size:0.95rem;">Tees by Dee was born from a passion for celebrating life's most meaningful milestones — from the joy of graduation to the beauty of a bride's special day.</p>
+        <p style="line-height:1.9;opacity:0.75;margin-bottom:2rem;font-size:0.95rem;">Every piece is made with intention — carefully crafted, thoughtfully designed, and delivered with love to hundreds of happy customers across Nigeria.</p>
+        <a href="about.html" class="btn-primary" style="margin-bottom:2.5rem;display:inline-block;">Read Our Full Story</a>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem;">
+          <div class="about-stat reveal delay-1"><span class="stat-number">500+</span><span class="stat-label">Happy Customers</span></div>
+          <div class="about-stat reveal delay-2"><span class="stat-number">100%</span><span class="stat-label">Custom Made</span></div>
+          <div class="about-stat reveal delay-3"><span class="stat-number">2+</span><span class="stat-label">Years Experience</span></div>
+          <div class="about-stat reveal delay-4"><span class="stat-number">48hr</span><span class="stat-label">Fast Turnaround</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- SERVICES -->
+  <section id="services" class="services-section">
+    <div style="max-width:1200px;margin:0 auto;">
+      <div class="reveal" style="text-align:center;">
+        <p class="section-label">What We Offer</p>
+        <h2 class="section-title">Our Collections</h2>
+      </div>
+      <div class="services-grid">
+        <div class="service-card reveal delay-1">
+          <div class="service-icon-wrap">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C4A882" stroke-width="1.5"><path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.57a1 1 0 00.99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.57a2 2 0 00-1.34-2.23z"/></svg>
+          </div>
+          <h3 class="service-title">Signout Shirts</h3>
+          <p class="service-desc">Celebrate your graduation in style with fully customized signout shirts. Your class, your names, your memories — printed beautifully on premium fabric.</p>
+          <a href="shop.html" class="service-tag">Final Year Students →</a>
+        </div>
+        <div class="service-card reveal delay-2">
+          <div class="service-icon-wrap">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C4A882" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3 class="service-title">Traditional Handfans</h3>
+          <p class="service-desc">Elegant, handcrafted traditional handfans perfect for weddings and ceremonies. Customized with colors and designs that match your special day.</p>
+          <a href="shop.html" class="service-tag">Bridal Collections →</a>
+        </div>
+        <div class="service-card reveal delay-3">
+          <div class="service-icon-wrap">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C4A882" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+          </div>
+          <h3 class="service-title">Custom Plain Tees</h3>
+          <p class="service-desc">Premium quality plain tees available in all sizes. Soft, durable, and perfect for custom printing — for events, groups, or everyday wear.</p>
+          <a href="shop.html" class="service-tag">All Occasions →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- BESTSELLERS -->
+  <section id="shop">
+    <div style="max-width:1200px;margin:0 auto;">
+      <div class="reveal" style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem;">
+        <div>
+          <p class="section-label">Featured</p>
+          <h2 class="section-title">Our Bestsellers</h2>
+        </div>
+        <a href="shop.html" class="btn-outline" style="margin-bottom:1rem;">View Full Shop</a>
+      </div>
+      <div class="products-grid">
+        <div class="product-card reveal delay-1">
+          <div style="position:relative;overflow:hidden;">
+            <img src="Out.jpg" alt="Signout Shirt" class="product-image"/>
+            <div class="product-overlay">
+              <a href="shop.html" class="product-overlay-btn">Order Now</a>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-name">Classic Signout Shirt</p>
+            <p class="product-price">From ₦8,500 / piece</p>
+          </div>
+        </div>
+        <div class="product-card reveal delay-2">
+          <div style="position:relative;overflow:hidden;">
+            <img src="Hnadfan.webp" alt="Bridal Handfan" class="product-image"/>
+            <div class="product-overlay">
+              <a href="shop.html" class="product-overlay-btn">Order Now</a>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-name">Bridal Handfan Set</p>
+            <p class="product-price">From ₦15,000 / fan</p>
+          </div>
+        </div>
+        <div class="product-card reveal delay-3">
+          <div style="position:relative;overflow:hidden;">
+            <img src="Plain tee.webp" alt="Plain Tee" class="product-image"/>
+            <div class="product-overlay">
+              <a href="shop.html" class="product-overlay-btn">Order Now</a>
+            </div>
+          </div>
+          <div class="product-info">
+            <p class="product-name">Premium Plain Tee</p>
+            <p class="product-price">From ₦4,500 / piece</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- TESTIMONIALS -->
+  <section class="testimonials-section">
+    <div style="max-width:1200px;margin:0 auto;">
+      <div class="reveal" style="text-align:center;">
+        <p class="section-label" style="color:var(--rose);">Kind Words</p>
+        <h2 class="section-title" style="color:white;">What Our Customers Say</h2>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testimonial-card reveal delay-1">
+          <div class="testimonial-quote">"</div>
+          <p class="testimonial-text">Our signout shirts were absolutely stunning! Every student in my class was obsessed. The quality exceeded our expectations completely.</p>
+          <span class="testimonial-author">— Amaka O., Final Year Student</span>
+        </div>
+        <div class="testimonial-card reveal delay-2">
+          <div class="testimonial-quote">"</div>
+          <p class="testimonial-text">The handfans for my wedding were breathtaking. My guests couldn't stop asking where I got them. Tees by Dee is simply the best!</p>
+          <span class="testimonial-author">— Blessing A., Bride</span>
+        </div>
+        <div class="testimonial-card reveal delay-3">
+          <div class="testimonial-quote">"</div>
+          <p class="testimonial-text">Fast delivery, amazing quality, and the custom printing was perfect. Will definitely be ordering again for our next event. Highly recommended!</p>
+          <span class="testimonial-author">— Chioma E., Customer</span>
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-grid">
+      <div class="reveal-left">
+        <p class="section-label">Get In Touch</p>
+        <h2 class="section-title">Let's Create Something Beautiful</h2>
+        <p style="opacity:0.7;line-height:1.9;margin-bottom:2rem;font-size:0.95rem;">Ready to place an order or have questions? We'd love to hear from you. Fill in the form and we'll get back to you within 24 hours.</p>
+        <div style="display:flex;flex-direction:column;gap:2rem;margin-top:1rem;">
+            <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="137b767f7f7c5367767660716a7776763d707c7e">[email&#160;protected]</a>
+          <div><p style="font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--taupe);margin-bottom:0.3rem;">Email</p><p>adebayoadeyemi0071@gmail.com</p></div>
+          <div><p style="font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--taupe);margin-bottom:0.3rem;">WhatsApp</p><p>+234 000 000 0000</p></div>
+          <div><p style="font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--taupe);margin-bottom:0.3rem;">Location</p><p>Lagos, Nigeria</p></div>
+        </div>
+      </div>
+      <div class="reveal-right">
+        <form style="display:flex;flex-direction:column;gap:1.2rem;" onsubmit="handleSubmit(event)">
+          <div class="form-group"><label class="form-label">Full Name</label><input type="text" class="form-input" placeholder="Your name" required/></div>
+          <div class="form-group"><label class="form-label">Email Address</label><input type="email" class="form-input" placeholder="your@email.com" required/></div>
+          <div class="form-group">
+            <label class="form-label">I'm Interested In</label>
+            <select class="form-input" style="appearance:none;cursor:pointer;">
+              <option value="">Select a product</option>
+              <option>Signout Shirts</option>
+              <option>Traditional Handfans</option>
+              <option>Custom Plain Tees</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group"><label class="form-label">Message</label><textarea class="form-input" rows="4" placeholder="Tell us about your order..."></textarea></div>
+          <button type="submit" class="btn-primary" style="margin-top:0.5rem;">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">TEES BY DEE</div>
+    <p style="font-size:0.8rem;opacity:0.4;">© 2026 Tees by Dee. All rights reserved.</p>
+    <div class="footer-links" style="display:flex;gap:2rem;">
+      <a href="about.html">About</a>
+      <a href="shop.html">Shop</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </footer>
+ 
+  <script>
+    // Cursor
+    const cursor=document.getElementById('cursor');
+    const follower=document.getElementById('cursorFollower');
+    let mx=0,my=0,fx=0,fy=0;
+    document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx-6+'px';cursor.style.top=my-6+'px';});
+    function animateFollower(){fx+=(mx-fx)*0.12;fy+=(my-fy)*0.12;follower.style.left=fx-18+'px';follower.style.top=fy-18+'px';requestAnimationFrame(animateFollower);}
+    animateFollower();
+    document.querySelectorAll('a,button,.service-card,.product-card,.about-stat').forEach(el=>{
+      el.addEventListener('mouseenter',()=>{cursor.style.transform='scale(2)';follower.style.transform='scale(1.5)';});
+      el.addEventListener('mouseleave',()=>{cursor.style.transform='scale(1)';follower.style.transform='scale(1)';});
+    });
+ 
+    // Navbar
+    window.addEventListener('scroll',()=>{document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>60);});
+ 
+    // Mobile menu
+    function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('open');}
+ 
+    // Scroll reveal
+    const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.1});
+    document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>observer.observe(el));
+ 
+    // Form
+        function handleSubmit(e){
+  e.preventDefault();
+  const form=e.target;
+  const name=form.querySelector('input[type=text]').value;
+  const email=form.querySelector('input[type=email]').value;
+  const product=form.querySelector('select').value;
+  const message=form.querySelector('textarea').value;
+  const subject=encodeURIComponent('Order Enquiry from '+name);
+  const body=encodeURIComponent('Name: '+name+'\nEmail: '+email+'\nInterested In: '+product+'\n\nMessage:\n'+message);
+  window.location.href='mailto:adebayoadeyemi0071@gmail.com?subject='+subject+'&body='+body;
+  const btn=e.target.querySelector('button[type=submit]');
+      btn.textContent='Message Sent ✓';
+      btn.style.background='var(--sage)';
+      setTimeout(()=>{btn.textContent='Send Message';btn.style.background='';e.target.reset();},3000);
+    }
+  </script>
+</body>
+</html>
